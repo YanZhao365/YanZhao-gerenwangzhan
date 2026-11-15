@@ -1,0 +1,231 @@
+#reading {
+  --aurora: #69e6f1;
+  --track-x: calc(100% - 10.5rem);
+  position: relative;
+  isolation: isolate;
+}
+#reading main { position: relative; z-index: 1; padding-right: 21rem; }
+#reading .chapter { scroll-margin-top: 0; border-bottom: 0; overflow-wrap: anywhere; }
+#reading canvas, .reading-beam { pointer-events: none; }
+#reading .reading-laser { z-index: 0; }
+.reading-floor { height: clamp(11rem, 32vh, 24rem); pointer-events: none; }
+
+.reading-nav {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  --pn-inner: 42px;
+  --pn-roll: 46px;
+  --pn-x: 12px;
+  --pn-tile: color-mix(in srgb, var(--aurora) 25%, #062233);
+  --pn-tile-rim: inset 0 0 0 1px #8de9fa24, 0 0 18px #69e6f129;
+  --pn-strong: #e7feff;
+  --pn-pill: var(--aurora);
+  --pn-pill-ink: #082333;
+  --pn-ring: white;
+}
+.reading-nav .pill-nav__slot {
+  position: absolute;
+  left: var(--track-x);
+  transform: translate(-88%, -50%);
+  height: var(--pn-inner);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .24s ease, visibility .24s;
+}
+.reading-nav .pill-nav__slot:nth-child(even) { transform: translate(-12%, -50%); }
+.reading-nav .pill-nav__slot.is-lit { opacity: 1; visibility: visible; pointer-events: auto; }
+.reading-nav .pill-nav__item { font-size: 13px; }
+.reading-beam { display: none; }
+#reading[data-laser-fallback] .reading-beam {
+  display: block;
+  position: absolute;
+  left: var(--track-x);
+  top: 0;
+  width: 24px;
+  height: var(--front, 0px);
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, #69e6f14d, var(--aurora) 50%, #69e6f14d, transparent);
+}
+#reading[data-laser-fallback] .reading-floor {
+  background: radial-gradient(ellipse at 75% 100%, #b8fbff, #298ea6 20%, #2a5589 46%, transparent 76%);
+  opacity: var(--spill, 0);
+}
+@media (max-width: 760px) {
+  #reading { --track-x: calc(100% - 6.25rem); }
+  #reading main { padding-right: 0; }
+  #reading .chapter { padding-top: 108px; }
+  .reading-nav { --pn-x: 9px; }
+  .reading-nav .pill-nav__slot:nth-child(even) { transform: translate(-18%, -50%); }
+  #reading .reading-laser { opacity: .62; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-nav *, .reading-nav .pill-nav__slot { transition: none; }
+}
+
+
+#reading { --track-x: calc(100% - 12rem); }
+#reading main { padding-right: 24rem; }
+.reading-nav { position: fixed; --pn-inner: clamp(29px, 9vh, 58px); --pn-x: 18px; }
+.reading-nav .pill-nav__slot { --from-beam: inset(-20% -10px -20% 100%); }
+.reading-nav .pill-nav__slot:nth-child(even) { --from-beam: inset(-20% 100% -20% -10px); }
+.reading-nav[data-items="pill"] .pill-nav__item {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+  font-size: clamp(13px, 2.6vh, 17px);
+}
+.reading-nav .pill-nav__item:focus-visible {
+  outline: 2px solid #bafaff;
+  outline-offset: 2px;
+}
+.reading-nav .pill-nav__slot[data-on] .pill-nav__face,
+.reading-nav .pill-nav__slot:is(:hover, :focus-within) .pill-nav__face { transform: none; }
+.reading-nav .pill-nav__face {
+  color: var(--aurora);
+  font-weight: 600;
+  text-shadow: 0 1px 2px #032436, 0 0 8px #7deeff70;
+}
+@supports (background-clip: text) {
+  .reading-nav .pill-nav__face {
+    background: linear-gradient(180deg, #efffff, var(--aurora) 72%);
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 1px 1px #032436) drop-shadow(0 0 4px #7deeff80);
+  }
+}
+.reading-nav .pill-nav__item:is(:hover, :focus-visible) .pill-nav__face { filter: brightness(1.25) drop-shadow(0 0 5px #7deeff); }
+
+#reading[data-laser-fallback] .reading-beam { position: fixed; }
+@media (max-width: 760px) {
+  #reading { --track-x: calc(100% - 6.5rem); }
+  #reading main { padding-right: 6.5rem; }
+  #reading .chapter { padding-top: 65px; }
+  .reading-nav { --pn-x: 8px; --pn-inner: clamp(27px, 8vh, 46px); }
+  .reading-nav[data-items="pill"] .pill-nav__item { font-size: 12px; }
+  .reading-nav .pill-nav__slot { transform: translate(-78%, -50%); }
+  .reading-nav .pill-nav__slot:nth-child(even) { transform: translate(-16%, -50%); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reading-nav .pill-nav__slot.is-draining {
+    visibility: visible;
+    opacity: 1;
+  }
+  .reading-nav .is-draining .pill-nav__face { animation: aurora-drain .42s .12s ease-in both; }
+}
+
+@keyframes aurora-drain {
+  from { clip-path: inset(-20% -10px); opacity: 1; }
+  to { clip-path: var(--from-beam); opacity: 0; }
+}
+
+#reading .reading-side-rays {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+  width: min(76vw, 72rem);
+  height: 77vh;
+  mask-image: linear-gradient(to right, #000 64%, transparent), linear-gradient(to bottom, #000 60%, transparent);
+  mask-composite: intersect;
+}
+@media (max-width: 760px) {
+  #reading .reading-side-rays { width: 94vw; height: 60vh; }
+}
+
+.reading-nav .pill-nav__face { position: relative; }
+.reading-nav .reading-label-stroke {
+  position: absolute;
+  inset: 0 -2px;
+  display: grid;
+  align-items: center;
+  pointer-events: none;
+}
+.reading-nav .reading-label-stroke:empty { display: none; }
+.reading-nav .pill-nav__face:has(.stroke-text__svg) .reading-label-text { visibility: hidden; }
+.reading-nav .is-lit .stroke-text__stroke { animation: aurora-outline-settle .24s .52s both; }
+.reading-nav .is-draining .stroke-text__stroke { opacity: 1; }
+.reading-nav .is-draining .stroke-text__fill { animation: aurora-white-fade .22s .12s both; }
+@keyframes aurora-outline-settle { from { opacity: 1; } to { opacity: 0; } }
+@keyframes aurora-white-fade { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .reading-nav .pill-nav__face:has(.stroke-text__svg) .reading-label-text { visibility: visible; }
+  .reading-nav .reading-label-stroke { display: none; }
+}
+
+.reading-nav .reading-label-stroke .stroke-text__svg {
+  width: 100%;
+  height: auto;
+}
+
+#reading .reading-react-particles,
+#reading .reading-glow-cursor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+#reading .reading-react-particles { z-index: 0; }
+#reading .reading-glow-cursor { z-index: 3; }
+#reading:has(#exhibition.immersed) .reading-glow-cursor { visibility: hidden; }
+
+.reading-portal-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 42;
+  overflow: hidden;
+  background: #020711;
+  animation: portal-transition-in .24s ease-out both;
+}
+.reading-portal-transition[hidden] { display: none; }
+.reading-portal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(64vmin, 620px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  animation: reading-portal-approach 1.5s cubic-bezier(.55, .02, .8, .65) both;
+}
+.reading-portal-water, .reading-portal-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.reading-portal-water { overflow: hidden; box-shadow: inset 0 0 30px #89f5ff; }
+.reading-portal-rim {
+  inset: -5%;
+  background: repeating-conic-gradient(from 0deg, #d5ffff 0deg 1deg, #67e6fb90 2deg, transparent 4deg 7deg);
+  mask-image: radial-gradient(transparent 61%, #000 66%, #000 68%, transparent 72%);
+  filter: drop-shadow(0 0 8px #75edff);
+  animation: reading-portal-rim-spin 3.8s linear infinite;
+}
+@keyframes reading-portal-rim-spin { to { rotate: 360deg; } }
+@keyframes reading-portal-approach {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(.82); }
+  78% { transform: translate(-50%, -50%) scale(1.08); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(5.8); }
+}
+@keyframes portal-transition-in { from { opacity: 0; } }
+
+.world-glow-cursor { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+body.reading .world-glow-cursor,
+body.reading-portal-active .world-glow-cursor,
+body:has(.world-links[inert]) .world-glow-cursor { display: none; }
+.reading-portal-transition .hyperspeed {
+  touch-action: none;
+  mask-image: radial-gradient(circle closest-side, transparent 39%, #000 66%);
+}
+
+.reading-portal-transition.is-preparing {
+  visibility: hidden;
+  pointer-events: none;
+  animation: none;
+}
+.reading-portal-transition.is-preparing .reading-portal {
+  transform: translate(-50%, -50%);
+  animation: none;
+}

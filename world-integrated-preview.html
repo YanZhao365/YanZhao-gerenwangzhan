@@ -1,0 +1,176 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>严彬荣 · 粒子海景研究</title><style>*{box-sizing:border-box}body{margin:0;background:#000;color:#effaff;font-family:'Microsoft YaHei',sans-serif;overflow:hidden}canvas{position:fixed;inset:0;width:100%;height:100%}header{position:fixed;top:32px;left:5%;right:5%;display:flex;justify-content:space-between;font-size:13px;pointer-events:none}header strong{font-size:22px}.identity{position:fixed;left:8%;top:24%;pointer-events:none}.identity h1{font-size:clamp(36px,5vw,68px);font-weight:400;letter-spacing:.12em;margin:0 0 20px}.identity p{font-size:14px;line-height:1.9;max-width:24em}.scroll-world{position:fixed;left:8%;top:49%;width:210px;height:70px;border:1px solid transparent;background:transparent;color:transparent;cursor:pointer;font:inherit}button:focus-visible{outline:2px solid #c8efff;outline-offset:5px}footer{position:fixed;bottom:25px;left:5%;right:5%;font-size:12px;display:flex;justify-content:space-between;gap:20px;color:#d7edf4}@media(max-width:650px){header{top:20px}.identity{top:18%;left:7%}.identity p{max-width:18em;font-size:12px}footer{font-size:10px}} body.reading{overflow:auto;background:#000}body.reading>canvas,body.reading>header,body.reading>.identity,body.reading>footer,body.reading>.world-links{display:none}.world-links{position:fixed;left:8%;top:48%;display:grid;grid-template-columns:170px 170px;gap:14px 12px}.world-links a{padding:17px 4px;color:#d7efff;font-size:21px;text-decoration:none;letter-spacing:.12em}.world-links a:hover{color:white}a:focus-visible{outline:2px solid #a3dafa;outline-offset:5px}#reading{display:none}body.reading #reading{display:block}section.chapter{padding:90px 9%;scroll-margin-top:80px;min-height:65vh;border-bottom:1px solid #263d4b}.chapter h2{font-size:42px;font-weight:400}.chapter p{line-height:2;max-width:48em;color:#bdcfdb}.chapter a{color:#a9d9ee}.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}.work-grid figure{margin:0}.work-grid img{width:100%;height:340px;object-fit:contain;background:#102331}.work-grid figcaption{margin-top:14px;line-height:1.8}.down-curtain{position:fixed;inset:0;background:#153f58;z-index:30;opacity:0;pointer-events:none}.down-curtain.active{animation:descend .9s both}@keyframes descend{0%{opacity:0;transform:translateY(100%)}42%,62%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-100%)}}@media(max-width:650px){.world-links{left:7%;top:40%;grid-template-columns:130px 130px;gap:6px}.world-links a{font-size:17px;padding:12px 2px}.work-grid{grid-template-columns:1fr 1fr;gap:15px}.work-grid img{height:240px}section.chapter{padding:65px 7%}.chapter h2{font-size:30px}}@media(prefers-reduced-motion:reduce){.down-curtain{animation:none!important}}
+header span,body>footer{display:none!important}.world-links{gap:10px 22px;grid-template-columns:180px 180px}.world-links a{min-height:58px;display:flex;align-items:center;border-radius:5px;transition:background .22s}.world-links a:hover,.world-links a:focus-visible{background:transparent}.world-links a canvas{width:176px!important;height:46px!important}.down-curtain{background:linear-gradient(180deg,#1c4f68,#0b2437 65%,#07141f)}.down-curtain::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#93d5e32e,transparent 65%);opacity:.7}@media(max-width:650px){.world-links{left:6%;right:6%;top:auto;bottom:max(20px,env(safe-area-inset-bottom));grid-template-columns:1fr 1fr;gap:2px 14px;background:#030b12b8;padding:8px}.world-links a{min-height:48px;padding:0 8px}.world-links a canvas{width:136px!important;height:36px!important}.identity{top:16%}section.chapter{scroll-margin-top:72px}}@media(prefers-reduced-motion:reduce){.world-links a{transition:none}}
+/* Typography and navigation refinement; sea particles remain unchanged. */
+.identity h1{margin-bottom:16px}.identity p{color:#b0c4d1;line-height:2.15;margin:0;font-size:14px}
+.world-links{grid-template-columns:180px 180px;column-gap:38px;row-gap:14px}
+.world-links a{position:relative;padding:12px 0;min-height:60px;border-radius:0;background:transparent;transition:none}
+.world-links a canvas{pointer-events:none}
+.world-links .entry-arrow{position:absolute;left:140px;top:50%;width:16px;height:16px;color:#d7edf7;opacity:0;transform:translate(-5px,-50%);transition:opacity .22s ease-out,transform .22s ease-out;pointer-events:none}
+.world-links a:hover .entry-arrow,.world-links a:focus-visible .entry-arrow{opacity:.9;transform:translate(0,-50%)}
+@media(max-width:650px){.identity p{font-size:12px;line-height:2.1}.world-links{grid-template-columns:1fr 1fr;gap:4px 14px}.world-links a{min-height:48px;padding:0 8px}.world-links .entry-arrow{left:116px;width:14px;height:14px}}
+@media(hover:none){.world-links .entry-arrow{opacity:.55;transform:translate(0,-50%)}}
+@media(prefers-reduced-motion:reduce){.world-links .entry-arrow{transition:none}}
+/* Six destinations on a quiet curved course. */
+.world-links{left:8%;top:46%;width:min(460px,43vw);height:min(40vh,360px);display:block;padding:0;background:transparent}
+.world-links a{position:absolute;top:calc(var(--stop)*16%);left:var(--arc);width:224px;height:72px;min-height:72px;padding:0;transform:translate(var(--pull-x,0px),var(--pull-y,0px));outline-offset:1px}
+.world-links a canvas{width:224px!important;height:77px!important;position:static;display:block}
+@media(max-width:900px) and (min-width:651px){.world-links{left:6%;width:40vw}.world-links a{left:calc(var(--arc)*.6)}}
+@media(max-width:650px){.world-links{left:5%;right:5%;top:auto;bottom:max(12px,env(safe-area-inset-bottom));width:90%;height:auto;display:grid;grid-template-columns:1fr 1fr;gap:0 8px;background:transparent}.world-links a{position:relative;top:auto;left:auto;width:100%;height:auto;min-height:58px;aspect-ratio:224/77;transform:none}.world-links a canvas{width:100%!important;height:auto!important;aspect-ratio:224/77}}
+/* Rising course: destinations progress from lower left to upper right. */
+.world-links{top:47%;width:min(840px,58vw);height:min(31vh,290px)}
+.world-links a{left:var(--course-x);top:var(--course-y);z-index:1}
+.world-links .world-course{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.world-course .course-leg{fill:none;stroke:#7aa7bd;stroke-width:1;stroke-dasharray:1 7;stroke-linecap:round;opacity:.3;transition:opacity .3s,stroke .3s}
+.world-course .course-leg.is-active{stroke:#c3e8f4;opacity:.85}
+@media(min-width:651px) and (max-width:1200px){.world-links{left:6%;width:63vw}.world-links a{width:184px;height:64px;min-height:64px}.world-links a canvas{width:184px!important;height:auto!important}}
+@media(max-width:650px){.world-links{top:auto;width:90%;height:auto}.world-links a{left:auto;top:auto;min-height:58px;width:100%;height:auto}.world-links .world-course{display:none}}
+@media(prefers-reduced-motion:reduce){.world-course .course-leg{transition:none}}
+@media(min-width:651px) and (max-width:1200px){.world-links{left:6%;top:46%;width:min(420px,85vw);height:auto;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}.world-links a{position:relative;left:auto;top:auto;width:100%;height:auto;min-height:64px;aspect-ratio:224/77}.world-links a canvas{width:100%!important;height:auto!important}.world-links .world-course{display:none}}
+/* Labels alternate across a continuous, unevenly spaced S course. */
+@media(min-width:1201px){.world-links a{height:44px;min-height:44px}.world-links a.label-left{margin-left:-194px}}
+.world-course .course-leg{opacity:.46;stroke-dasharray:1 6;stroke-width:1.1}
+/* Destination departure: gather, sink, then descend into reading. */
+.world-links a{transition:opacity .22s ease-out}
+.world-links.is-travelling a:not(.is-departing){opacity:.42}
+.world-links.is-travelling{pointer-events:none}
+.world-links a.is-departing canvas{transform-origin:var(--beacon-origin,5%) 34%;animation:waypoint-depart .44s cubic-bezier(.4,0,.25,1) both}
+@keyframes waypoint-depart{0%{opacity:1;transform:translateY(0) scale(1)}24%{opacity:1;transform:translateY(-2px) scale(1.04)}65%{opacity:.8;transform:translateY(9px) scale(.58)}100%{opacity:0;transform:translateY(25px) scale(.16)}}
+.down-curtain.active{animation-duration:.72s;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){.world-links a,.world-links a.is-departing canvas{transition:none;animation:none}}
+/* The particle renderer owns departure; the curtain waits until it completes. */
+.world-links a.is-departing canvas{animation:none;transform:none}
+body.world-returning>canvas,body.world-returning>.identity,body.world-returning>.world-links{animation:world-return .6s ease-out both}
+@keyframes world-return{from{opacity:.35}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){body.world-returning>canvas,body.world-returning>.identity,body.world-returning>.world-links{animation:none}}
+.scroll-world{position:fixed;top:auto;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);width:auto;height:44px;padding:10px 16px;border:0;background:transparent;color:#b4cbd9;font-size:12px;letter-spacing:.08em;z-index:2;display:flex;align-items:center;gap:10px}.scroll-world svg{width:14px;height:20px}.scroll-world:hover{color:#f0faff}body.reading>.scroll-world,body:has(.world-links.is-travelling)>.scroll-world{display:none}@media(max-width:650px){.scroll-world{bottom:auto;top:41%;left:7%;transform:none;padding-left:0}}
+.down-curtain.surface-active{animation:surface-ascent .9s cubic-bezier(.4,0,.3,1) both;pointer-events:auto}
+@keyframes surface-ascent{0%{opacity:0;transform:translateY(-100%)}38%,62%{opacity:1;transform:none}100%{opacity:0;transform:translateY(100%)}}
+body.world-returning>canvas{animation:surface-world .85s ease-out both}body.world-returning>.identity{animation:world-return .85s ease-out both}body.world-returning>.world-links{animation:none;pointer-events:none}
+@keyframes surface-world{from{opacity:.45;transform:scale(1.025);filter:blur(2px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+@media(prefers-reduced-motion:reduce){.down-curtain.surface-active,body.world-returning>canvas,body.world-returning>.identity{animation:none}}
+.chapter h2[data-pointer-focus]:focus{outline:none}
+
+/* Orbit Images adapted to the six existing destinations. */
+.identity{left:5%;top:clamp(90px,15vh,146px)}
+.identity h1{font-size:clamp(30px,3.25vw,52px);margin-bottom:8px}
+.world-links.world-orbit{
+  inset:66.67% auto auto 50%;transform:translate(-50%,-50%);display:block;
+  width:min(98vw,1180px);height:clamp(170px,30vh,320px);background:none;isolation:isolate;
+}
+.world-orbit .orbit-track{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.orbit-track{overflow:visible}
+.orbit-track ellipse{fill:none}
+.orbit-particle{fill:#d5f7ff;filter:drop-shadow(0 0 3px #6ccfff)}
+.world-orbit a{
+  position:absolute;top:50%;left:50%;width:max-content;height:44px;min-height:44px;
+  padding:0 8px;margin:0;aspect-ratio:auto;justify-content:center;
+  color:#d7efff;font-size:clamp(18px,2.1vw,30px);letter-spacing:.045em;white-space:nowrap;
+  text-shadow:0 2px 8px #000,0 0 4px #000;
+  transform:translate(-50%,-50%) scale(var(--orbit-scale,1));opacity:var(--orbit-opacity,1);
+}
+.world-orbit a:hover,.world-orbit a:focus-visible{opacity:1;color:#fff;z-index:110!important}
+.world-orbit a.has-particle-label{color:transparent;text-shadow:none}
+.world-orbit a canvas.orbit-label-particles{
+  position:absolute;inset:0;width:100%!important;height:100%!important;
+  aspect-ratio:auto;pointer-events:none;filter:drop-shadow(0 0 2px #8bdcff);
+}
+.world-orbit a:hover .orbit-label-particles,.world-orbit a:focus-visible .orbit-label-particles{
+  filter:drop-shadow(0 0 4px #a3dcff) drop-shadow(0 0 2px #4caaff);
+}
+.world-orbit.is-travelling a.is-departing{animation:orbit-depart .7s ease-in both}
+@keyframes orbit-depart{to{opacity:0;transform:translate(-50%,0) scale(.6)}}
+/* The signal travels across the selected label before the reading view appears. */
+.glitch-sweep{
+  position:fixed;left:0;width:100%;height:calc((25vh - 2px) / .53);transform:translateY(-50%);z-index:31;pointer-events:none;
+  mask-image:linear-gradient(to right,#000 0 var(--label-start),transparent var(--label-start) var(--label-end),#000 var(--label-end) 100%);
+}
+.glitch-sweep::before,.glitch-sweep::after{
+  content:'';position:absolute;inset:0;
+  background:currentColor;
+  clip-path:var(--sweep-shape);
+}
+.glitch-sweep::before{color:#3478ff;transform:translateY(-1px)}
+.glitch-sweep::after{color:#a3dcff;transform:translateY(1px)}
+.glitch-sweep{animation:glitch-scan var(--sweep-duration) linear both}
+@keyframes glitch-scan{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+.glitch-sweep.is-fading{opacity:0;transition:opacity 300ms ease-out}
+body.reading:has(.glitch-sweep.is-fading) #reading{animation:glitch-reading-in 300ms ease-out both}
+@keyframes glitch-reading-in{from{opacity:0}to{opacity:1}}
+/* React Bits Glitch Text: offset RGB slices, adapted for a single activation. */
+.world-orbit.is-travelling a.is-glitching{opacity:1}
+.world-orbit a.is-glitching::before,.world-orbit a.is-glitching::after{
+  content:attr(aria-label);position:absolute;inset:0;display:grid;place-items:center;
+  pointer-events:none;text-shadow:none;
+}
+.world-orbit a.is-glitching::before{color:#3478ff;animation:orbit-glitch .16s steps(1) 3}
+.world-orbit a.is-glitching::after{color:#a3dcff;animation:orbit-glitch .16s steps(1) 3 reverse}
+@keyframes orbit-glitch{
+  0%{clip-path:inset(15% 0 62%);transform:translate(-5px,-1px) skewX(-7deg)}
+  33%{clip-path:inset(48% 0 30%);transform:translate(6px,1px) skewX(8deg)}
+  66%{clip-path:inset(65% 0 12%);transform:translate(-3px,0)}
+}
+@media(max-width:650px){
+  .identity{top:76px}
+  .identity p{font-size:12px;line-height:1.65}
+  .world-links.world-orbit{top:78%;height:clamp(96px,15vh,130px)}
+  .world-orbit a{font-size:clamp(13px,4vw,18px);padding:0 3px}
+  @media(max-height:500px){.world-links.world-orbit{top:75%}.world-orbit a{height:36px;min-height:36px}}
+  .scroll-world{inset:auto auto max(12px,env(safe-area-inset-bottom)) 50%;transform:translateX(-50%);padding-left:16px}
+}
+@media(max-height:500px) and (orientation:landscape){
+  .identity{top:56px}
+  .world-links.world-orbit{height:100px}
+}
+@media(prefers-reduced-motion:reduce){.world-orbit.is-travelling a.is-departing{animation:none}}
+</style><link rel="stylesheet" href="reading-pill.css"><link rel="stylesheet" href="reading-side-rays.css"><link rel="stylesheet" href="reading-ocean.css"><link rel="stylesheet" href="reading-exhibition.css"><canvas aria-label="粒子夜海、月亮与灯塔"></canvas><header><strong>YBR</strong><span>月光夜航 · 粒子云幕</span></header><div class="identity"><h1 style="visibility:hidden">严彬荣</h1><p>AI热爱者*视觉设计探索者*新领域探索者</p></div><footer><span>悬停文字，观察粒子聚合</span><span>月面／碎月光／云幕 · 暂未接入开场</span></footer><script src="world-lighthouse.js"></script><script>
+window.worldOpeningPending=new URLSearchParams(location.search).get('embedded')==='1';
+const cv=document.querySelector('canvas'),reduce=matchMedia('(prefers-reduced-motion: reduce)');const gl=cv.getContext('webgl',{alpha:false,antialias:false});const ctx=gl?createParticleRenderer():null;if(!ctx)document.querySelector('.identity h1').style.visibility='visible';
+function createParticleRenderer(){const vs='attribute vec3 p;attribute vec4 color;uniform vec2 viewport;uniform float density;varying vec4 tint;void main(){gl_Position=vec4(p.x/viewport.x*2.0-1.0,1.0-p.y/viewport.y*2.0,0.0,1.0);gl_PointSize=p.z*density;tint=color;}',frag='precision mediump float;varying vec4 tint;void main(){float r=length(gl_PointCoord-vec2(.5));if(r>.5)discard;gl_FragColor=vec4(tint.rgb,tint.a*(1.0-smoothstep(.3,.5,r)));}';function shader(type,src){const a=gl.createShader(type);gl.shaderSource(a,src);gl.compileShader(a);if(!gl.getShaderParameter(a,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(a));return a}const program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,vs));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,frag));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);for(const [name,size,offset] of [['p',3,0],['color',4,12]]){const at=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(at);gl.vertexAttribPointer(at,size,gl.FLOAT,false,28,offset)}gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);let vertices=new Float32Array(3000000),cursor=0;const palette=new Map();const viewport=gl.getUniformLocation(program,'viewport'),density=gl.getUniformLocation(program,'density');return {globalAlpha:1,fillStyle:'#000',setTransform(){},fillRect(x,y,w,h){if(w===W&&h===H){cursor=0;gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,1);gl.clear(gl.COLOR_BUFFER_BIT);return}let c=palette.get(this.fillStyle);if(!c){const n=parseInt(this.fillStyle.slice(1),16);c=[(n>>16)/255,((n>>8)&255)/255,(n&255)/255];palette.set(this.fillStyle,c)}vertices[cursor++]=x+w/2;vertices[cursor++]=y+h/2;vertices[cursor++]=w;vertices[cursor++]=c[0];vertices[cursor++]=c[1];vertices[cursor++]=c[2];vertices[cursor++]=this.globalAlpha},flush(){gl.uniform2f(viewport,W,H);gl.uniform1f(density,dpr);gl.bufferData(gl.ARRAY_BUFFER,vertices.subarray(0,cursor),gl.DYNAMIC_DRAW);gl.drawArrays(gl.POINTS,0,cursor/7)}}}let W,H,dpr,frame=0;let mouse={x:-1000,y:-1000},view={x:0,y:0};window.addEventListener('pointermove',e=>{mouse={x:e.clientX,y:e.clientY}});document.documentElement.addEventListener('pointerleave',()=>{mouse={x:-1000,y:-1000}});let seed=365;function rand(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}const skyPoints=Array.from({length:24000},()=>({x:rand(),y:rand()*.47,r:rand(),z:rand()}));// Fixed sparse stars use their own seed, preserving all existing scene samples.
+const stars=(()=>{let starSeed=7319;const sr=()=>{starSeed=(starSeed*1664525+1013904223)>>>0;return starSeed/4294967296};return Array.from({length:260},()=>({x:sr(),y:.025+sr()*.405,r:sr(),a:sr()}))})();let namePoints=[];const sea=Array.from({length:16000},()=>({x:(rand()-.5)*110,z:2+rand()*115,r:rand(),p:rand()*6.28}));// Perspective-aware foreground sampling: uniformly sample screen depth, then unproject onto the water plane.
+const extraSea=Array.from({length:28000},()=>{const depth=.10+rand()*.52,z=1.86/depth;return {x:(rand()-.5)*z/ .62,z,r:rand(),p:rand()*6.28}});sea.push(...extraSea);
+function resize(){if(!ctx)return;W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio,1.5);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);const nc=document.createElement('canvas');nc.width=400;nc.height=110;const nt=nc.getContext('2d');nt.font=getComputedStyle(document.querySelector('h1')).font;nt.fillText('严彬荣',0,parseFloat(getComputedStyle(document.querySelector('h1')).fontSize)*.95+12);const nd=nt.getImageData(0,0,400,110).data;namePoints=[];for(let y=0;y<110;y+=2)for(let x=0;x<400;x+=2)if(nd[(y*400+x)*4+3]>100)namePoints.push({x,y});if(reduce.matches)draw(0)}function dot(x,y,r,c,alpha=1){x+=view.x;y+=view.y;if(!reduce.matches&&mouse.x>-100){const dx=x-mouse.x,dy=y-mouse.y,distanceSquared=dx*dx+dy*dy;if(distanceSquared>0&&distanceSquared<4225){const dist=Math.sqrt(distanceSquared),force=1-dist/65;x+=dx/dist*force*9;y+=dy/dist*force*9}}ctx.globalAlpha=alpha;ctx.fillStyle=c;ctx.fillRect(x-r,y-r,r*2,r*2)}function swell(x,z,t){return Math.sin(x*.26+z*.34-t*.85)*.42+Math.sin(x*.15-z*.21-t*.57)*.18}function beginParticleFrame(){
+  ctx.globalAlpha=1;ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);const vx=mouse.x>-100?(mouse.x/W-.5)*8:0,vy=mouse.x>-100?(mouse.y/H-.5)*5:0;view.x+=((reduce.matches?0:vx)-view.x)*.05;view.y+=((reduce.matches?0:vy)-view.y)*.05;
+}
+function drawSky(t, heightScale = 1){
+  for(const p of skyPoints){const flow=t*(.001+.0015*p.z);const nx=(p.x+flow)%1,ny=p.y+Math.sin(nx*11+t*.12+p.z)*.009;const cloud=.5+.25*Math.sin(nx*12+ny*16-t*.10)+.25*Math.sin(nx*21-ny*12+t*.07);const reading=nx<.36&&ny>.20?.48:1;dot(nx*W,ny*H*heightScale,.30+p.r*.45,cloud>.72?'#83a8c3':'#31516e',(.025+.48*Math.pow(Math.max(0,(cloud-.2)/.8),2))*reading)}
+}
+let worldDrawFrame=0;
+function scheduleWorldDraw(){if(ctx&&!worldDrawFrame)worldDrawFrame=requestAnimationFrame(draw)}
+function draw(ms){worldDrawFrame=0;if(!ctx)return;if(window.worldOpeningPending||document.body.classList.contains("reading")||document.body.classList.contains("reading-portal-active")||document.hidden){window.worldPaused=true;return}window.worldPaused=false;const t=reduce.matches?0:ms/1000;beginParticleFrame();// Correlated cloud movement: no independent random twinkle or star streaks.
+drawSky(t);
+const sunX=W*(W<=650?.46:.29),sunY=H*(W<=650?.085:.105);
+// Quiet, fixed stars: a few bright points, softened near the moon and identity.
+for(const p of stars){const x=p.x*W,y=p.y*H;const moonDist=Math.hypot((x-sunX)/H,(y-sunY)/H),moonFade=Math.min(1,Math.max(0,(moonDist-.053)/.09));const textFade=p.x<.43&&p.y>.15?.38:1;const horizonFade=Math.min(1,(.46-p.y)/.12);const alpha=(.38+p.a*.38)*moonFade*textFade*horizonFade;dot(x,y,p.r>.95?1.15:p.r>.72?.82:.56,p.r>.95?'#e4eef7':'#a4bfd6',alpha)}
+seed=888;for(let i=0;i<4400;i++){const a=rand()*6.283,r=Math.sqrt(rand()),px=Math.cos(a)*r,py=Math.sin(a)*r;const sphereZ=Math.sqrt(Math.max(0,1-r*r));const light=Math.max(0,px*.75+sphereZ*.52);const crater=.76+.12*Math.sin(px*19+py*11)*Math.sin(py*23-px*8);const cloudShade=.90+.08*Math.sin(t*.12);dot(sunX+px*H*.045,sunY+py*H*.045,.5+rand()*.5,light>.30?'#d9e8f2':'#4a6784',(.10+light*.60)*crater*cloudShade)}
+const horizon=H*.46,f=W<650?W*.95:W*.62;
+const light = lighthouse.pose(W, H, f, horizon, t, swell);
+for (const p of sea) {
+  const wave = swell(p.x, p.z, t);
+  const x = W * .5 + p.x / p.z * f;
+  const y = horizon + (3 + wave) / p.z * f + Math.sin(p.x * .12 + p.z * .21) * 1.5;
+  if (x < -5 || x > W + 5 || y > H + 5) continue;
+  const distanceSquared = ((x - light.spotX) ** 2 + (y - light.spotY) ** 2) / light.radius ** 2;
+  const intensity = Math.max(0, 1 - distanceSquared) ** 1.7;
+  const size = Math.min(1.25, .25 + f / p.z * .008) * (p.r * .45 + .7);
+  dot(x, y, size, intensity > .16 ? '#a9d7ec' : p.r > .5 ? '#659ab8' : '#2c577e',
+    .16 + p.r * .38 + intensity * .48);
+}
+lighthouse.draw(light, dot);
+const nr=document.querySelector('h1').getBoundingClientRect();for(const p of namePoints)dot(nr.left+p.x,nr.top+p.y-12,.8,'#e9f8ff',.95);ctx.globalAlpha=1;ctx.flush();frame++;if(!reduce.matches)scheduleWorldDraw()}window.addEventListener('resize',resize);reduce.onchange=()=>{if(!reduce.matches)scheduleWorldDraw();else draw(0)};window.seaPreviewState=()=>({renderer:'WebGL POINTS',points:skyPoints.length+sea.length,frame});resize();if(!reduce.matches)scheduleWorldDraw();
+</script><script src="content.js"></script><nav class="world-links world-orbit" aria-label="世界栏目入口"><svg class="orbit-track" aria-hidden="true"><ellipse cx="0" cy="0" rx="1" ry="1"/></svg></nav><div class="world-glow-cursor" aria-hidden="true"></div><div id="reading"><div class="reading-react-particles" aria-hidden="true"></div><div class="reading-glow-cursor" aria-hidden="true"></div><div class="reading-side-rays" aria-hidden="true"></div><canvas class="reading-laser" aria-hidden="true"></canvas><div class="reading-beam" aria-hidden="true"></div><nav class="reading-nav pill-nav" data-items="pill" aria-label="内容导航"></nav><main></main><div class="reading-floor" aria-hidden="true"></div></div><div class="reading-portal-transition" aria-hidden="true" hidden></div><div class="down-curtain" aria-hidden="true"></div><button type="button" class="scroll-world" aria-label="进入深海，进入个人介绍长页"><svg viewBox="0 0 16 22" aria-hidden="true"><path d="M8 2v16m-5-5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span>进入深海</span></button><template id="reading-exhibition-template"><div class="exhibition" id="exhibition" tabindex="-1" aria-label="作品展台">
+<div class="toolbar"><div class="tabs" role="tablist" aria-label="作品分类"><button role="tab" aria-selected="true" id="poster-tab" aria-controls="poster-panel">海报</button><button role="tab" aria-selected="false" id="ppt-tab" aria-controls="ppt-panel" tabindex="-1">PPT</button></div><div class="tools"><div class="immersive-control"><button type="button" class="squish-switch" id="immersive-switch" aria-describedby="immersive-switch-text" role="switch" aria-checked="false" aria-label="沉浸式展台" title="进入沉浸式展台"><span class="squish-switch__track" aria-hidden="true"><span class="squish-switch__thumb"></span></span><span id="immersive-switch-text">点击进入沉浸式界面</span></button></div></div></div>
+<div id="poster-panel" role="tabpanel" aria-labelledby="poster-tab">
+<div class="art-space">
+<div class="catalogue" id="catalogue" aria-label="横向作品列表"><div class="rail" id="rail"></div></div>
+<article class="feature" id="feature" hidden>
+<div class="feature-type"><p>A FANTASY JUNGLE EXPEDITION</p><h2><span>LET THE</span><span>FOREST</span><span>SLEEP</span></h2><div class="feature-caption"><span>别惊动这片森林</span><span>奇幻探险 / 海报</span></div></div>
+<div class="hero-art" id="original"><img src="我的作品/海报文件/印刷网格风/别惊动这片森林.png" alt="巨蟒、食人植物与狐狸探险者构成的奇幻森林海报"></div>
+<div class="feature-note">DON’T WAKE<br>WHAT LIES WITHIN.</div>
+</article>
+<div class="edge edge-left" aria-hidden="true">←</div><div class="edge edge-right" aria-hidden="true">→</div>
+</div>
+<div class="stage-footer"><p id="hint">鼠标左/右半屏浏览 · 点击作品展开</p></div>
+</div>
+<div id="ppt-panel" role="tabpanel" aria-labelledby="ppt-tab" hidden><div class="ppt-content"><h2>PPT 作品</h2><div id="ppt-links"></div></div></div>
+<p class="notice" id="notice" role="status" aria-live="polite"></p>
+</div></template><script src="world-orbit.js"></script><link rel="stylesheet" href="journey-branches.css"><link rel="stylesheet" href="assets/journey-folder.css"><script src="assets/journey-folder.js"></script><script src="journey-branches.js"></script><link rel="stylesheet" href="email-split-flap.css"><script src="email-split-flap.js"></script><script src="world-navigation.js"></script><script src="work-exhibition-content.js"></script><script src="work-exhibition.js"></script><link rel="stylesheet" href="assets/site-galleries.css"><script src="assets/site-galleries.js" defer></script><script src="work-exhibition-depth.js"></script><script src="reading-laser.js"></script><script src="reading-side-rays.js"></script><script src="reading-ocean.js"></script><script src="world-opening-bridge.js"></script></html>

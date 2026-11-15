@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>严彬荣 · 夜海创作世界</title><style>
+*{box-sizing:border-box}:root{font-family:"Segoe UI","Microsoft YaHei",sans-serif;color:#253136;background:#e7eceb}body{margin:0}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #197f8b;outline-offset:6px}[hidden]{display:none!important}.scene{position:relative;min-height:600px;height:100svh;overflow:hidden}header{position:absolute;left:5vw;right:5vw;top:28px;display:flex;justify-content:space-between;gap:24px;font-size:14px;z-index:5}header strong{font-size:20px}.entry{position:absolute;inset:0;perspective:850px;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .65s}.enter{border:0;padding:11px 30px;background:#263c42;color:#f2fbfb;border-radius:40px;transition:background .2s,transform .2s;min-height:46px}.enter:hover{background:#185b69}.enter:active{transform:scale(.97)}.destination{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:32px;background:#d5e7e7;opacity:0;visibility:hidden;transition:opacity 1s}.destination h1{font-size:clamp(36px,6vw,76px);margin:0 0 20px}.destination p{max-width:30em;line-height:1.8}.destination button{border:0;background:#263c42;color:white;padding:12px 24px;margin-top:18px}.scene.arrived .destination{opacity:1;visibility:visible}.scene.arrived .entry{opacity:0;pointer-events:none}footer{position:absolute;bottom:25px;left:24px;right:24px;text-align:center;font-size:13px;line-height:1.8;z-index:5;pointer-events:none}footer p{margin:0}.scene.arrived footer{display:none}@media(max-width:600px){header{font-size:12px}header span{max-width:150px;text-align:right}.scene{min-height:560px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.destination{background:radial-gradient(ellipse at 55% 35%,#edf7f3 0%,#b8d8d8 55%,#739ba7 100%);overflow:hidden;transition:opacity 1s;perspective:900px}.destination::before{content:'';position:absolute;width:60vw;height:85vh;top:-20vh;left:20vw;border:clamp(25px,7vw,100px) solid #dcece8;border-radius:48% 48% 0 0;transform:translateZ(100px);box-shadow:20px 30px 70px #24465240;pointer-events:none}.destination::after{content:'';position:absolute;inset:65% -50% -70%;background:linear-gradient(#bcd7d9,#547985);transform:rotateX(65deg);transform-origin:top;pointer-events:none}.destination>*{position:relative;z-index:1}.destination h1{max-width:12ch;text-wrap:balance;filter:blur(18px);transform:translateY(35px) scale(1.06);opacity:0;transition:filter 2.8s,transform 2.8s,opacity 1.8s}.destination p,.destination button{opacity:0;transition:opacity 1s .9s}.scene.entering .destination,.scene.arrived .destination{visibility:visible;opacity:1}.scene.entering .destination{animation:space-in 2s .3s both}.scene.entering .destination h1,.scene.arrived .destination h1{filter:blur(0);transform:none;opacity:1}.scene.entering .destination p,.scene.entering .destination button,.scene.arrived .destination p,.scene.arrived .destination button{opacity:1}.scene.entering .entry{z-index:2;pointer-events:none;animation:entry-out 1s both}.scene.entering header,.scene.entering footer{opacity:0;transition:opacity .5s}.scene.arrived header{opacity:0;pointer-events:none}@keyframes entry-out{0%{opacity:1}100%{opacity:0;visibility:hidden}}@keyframes space-in{from{opacity:0;transform:scale(1.18) translateY(20px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.destination,.entry{animation:none!important}.destination h1{filter:none;transform:none}}
+.curtain{position:fixed;inset:0;z-index:10;background:#171717;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:translateY(0);transition:transform 900ms cubic-bezier(.76,0,.24,1);overflow:hidden}.curtain.open{transform:translateY(-100%);pointer-events:none}.mark{font-size:clamp(74px,16vw,180px);font-weight:650;letter-spacing:-.055em;line-height:1;margin:0}.loader-bottom{position:absolute;bottom:max(32px,env(safe-area-inset-bottom));left:clamp(24px,5vw,80px);right:clamp(24px,5vw,80px);display:flex;justify-content:space-between;align-items:end;gap:24px}.description{font-size:14px;line-height:1.8}.description p{margin:0}.percentage{font-size:clamp(28px,5vw,58px);font-variant-numeric:tabular-nums;line-height:1}.progress-track{position:absolute;bottom:0;left:0;right:0;height:3px;background:#333}.progress-fill{height:100%;background:#eeeae2;width:0;transition:width 180ms ease}.failure{max-width:32em;text-align:center;padding:24px;font-size:15px}.failure button{margin:8px;padding:9px 16px;border:1px solid #aaa;background:none;color:#fff}.curtain.complete .mark{opacity:.75;transition:opacity 180ms}header span,footer{display:none!important}.curtain{color:#eeeae2}.curtain .mark{margin:0}.curtain button{color:#fff}@media(prefers-reduced-motion:reduce){.curtain,.progress-fill{transition:none}}
+
+.destination{padding:0;background:#000;perspective:none}
+.destination::before,.destination::after{display:none}
+#world-frame{display:block;position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.scene.arrived .destination{transition:none}
+.scene.arrived{min-height:0;height:100svh}
+.scene.entering .destination{animation:world-enter 1.75s both}
+@keyframes world-enter{0%{opacity:0;transform:scale(1.06);filter:blur(5px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+.enter:disabled{cursor:wait;opacity:.65}
+@media(prefers-reduced-motion:reduce){.scene.entering .destination{animation:none!important}}
+.entry-ring{position:relative;display:grid;place-items:center;width:clamp(230px,35vw,320px);aspect-ratio:1}
+.circular-text{position:absolute;inset:0;animation:circular-spin 12s linear infinite;color:#263c42;font-size:clamp(18px,2.6vw,26px);font-weight:700;pointer-events:none}
+.circular-text span{position:absolute;inset:0;text-align:center}
+.scene.entering .circular-text,.scene.arrived .circular-text{animation-play-state:paused}
+.entry-ring .enter{position:relative}
+
+@keyframes circular-spin{to{transform:rotate(1turn)}}
+@media(prefers-reduced-motion:reduce){.circular-text{animation:none}}
+.opening-warp{position:absolute;inset:0;z-index:6;width:100%;height:100%;pointer-events:none}
+.cursor-swarm{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.cursor-swarm span{position:absolute;top:0;left:0;width:5px;height:9px;border-radius:1px;box-shadow:0 0 0 1px #32648b50;opacity:.85}
+</style></head><body><section class="curtain" id="curtain" aria-label="网站加载" aria-busy="true"><p class="mark" aria-label="YBR">YBR</p><div class="failure" id="failure" hidden><p>部分图片未能加载。可以重试，或继续查看入口。</p><button id="retry">重试加载</button></div><div class="loader-bottom"><div class="description"><p>严彬荣</p><p id="stage">Loading portfolio content</p></div><div class="percentage" id="progress" role="progressbar" aria-label="图片加载进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0%</div></div><div class="progress-track" aria-hidden="true"><div class="progress-fill" id="fill"></div></div></section>
+<main class="scene" id="scene"><header><strong>YBR</strong></header><section class="entry" id="entry" aria-label="进入个人网站"><div class="cursor-swarm" id="cursor-swarm" aria-hidden="true" hidden></div><div class="entry-ring">
+<div class="circular-text" id="circular-text" role="img" aria-label="ENTER*IT*TO*KNOW*ME!"></div>
+<button class="enter" id="enter" type="button">Enter</button>
+</div></section><section class="destination" id="destination" aria-hidden="true" inert><iframe id="world-frame" title="严彬荣的夜海创作世界" tabindex="0"></iframe><button id="replay" hidden aria-hidden="true" tabindex="-1">Replay</button></section><canvas id="opening-warp" class="opening-warp" aria-hidden="true" hidden></canvas></main><script src="opening-cursor-swarm.js"></script><script src="opening-warp.js"></script><script src="opening-world.js"></script><script>
+// CircularText from React Bits spaces glyphs evenly around one turn.
+const ring = document.getElementById('circular-text');
+const glyphs = Array.from('ENTER*IT*TO*KNOW*ME! ENTER*IT*TO*KNOW*ME! ');
+glyphs.forEach((glyph, index) => {
+  const letter = document.createElement('span');
+  letter.textContent = glyph;
+  letter.style.transform = 'rotate(' + (360 * index / glyphs.length) + 'deg)';
+  letter.setAttribute('aria-hidden', 'true');
+  ring.append(letter);
+});
+
+const scene = document.getElementById('scene');
+const entry = document.getElementById('entry');
+const enter = document.getElementById('enter');
+const destination = document.getElementById('destination');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+let phase = 'idle';
+
+function arrive() {
+  window.stopOpeningWarp?.();
+  phase = 'arrived';
+  scene.classList.add('arrived');
+  entry.inert = true;
+  entry.setAttribute('aria-hidden', 'true');
+  destination.inert = false;
+  destination.removeAttribute('aria-hidden');
+  document.getElementById('world-frame').focus({preventScroll: true});
+}
+
+enter.addEventListener('click', () => {
+  if (phase !== 'idle' || !window.openingWorldIsReady) return;
+  phase = 'entering';
+  scene.classList.add('entering');
+  enter.disabled = true;
+  if (reduced.matches || !window.playOpeningWarp) {
+    window.activateOpeningWorld();
+    arrive();
+  } else window.playOpeningWarp(arrive, window.activateOpeningWorld);
+});
+reduced.addEventListener('change', () => {
+  if (reduced.matches && phase === 'entering') {
+    window.activateOpeningWorld();
+    arrive();
+  }
+});
+window.letterPreviewState = () => ({phase});
+</script><script>(()=>{
+const curtain=document.getElementById('curtain');
+const entrance=document.getElementById('scene');
+const failure=document.getElementById('failure');
+const stage=document.getElementById('stage');
+const progress=document.getElementById('progress');
+const fill=document.getElementById('fill');
+const retry=document.getElementById('retry');
+async function start(){
+  failure.hidden=true;
+  retry.disabled=true;
+  curtain.setAttribute('aria-busy','true');
+  stage.textContent='正在加载夜海';
+  try {
+    await window.prepareOpeningWorld();
+    progress.textContent='100%';
+    progress.setAttribute('aria-valuenow','100');
+    fill.style.width='100%';
+    stage.textContent='加载完成';
+    curtain.classList.add('complete');
+    entrance.inert=false;
+    entrance.removeAttribute('aria-hidden');
+    const finish=()=>{curtain.hidden=true;curtain.setAttribute('aria-hidden','true')};
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)finish();
+    else {
+      const fallback=setTimeout(finish,1500);
+      curtain.addEventListener('transitionend',()=>{clearTimeout(fallback);finish()},{once:true});
+      requestAnimationFrame(()=>curtain.classList.add('open'));
+    }
+  } catch {
+    stage.textContent='夜海加载失败';
+    failure.querySelector('p').textContent='夜海页面尚未准备好，请重试。';
+    failure.hidden=false;
+    retry.disabled=false;
+    retry.focus();
+  } finally {
+    curtain.setAttribute('aria-busy','false');
+  }
+}
+retry.addEventListener('click',start);
+start();
+})();</script></body></html>
