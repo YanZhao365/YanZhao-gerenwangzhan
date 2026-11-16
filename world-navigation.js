@@ -5,6 +5,7 @@ let disposeEntryTransition;
 const entryCurtain=document.querySelector('.down-curtain');
 const portalDuration = 1500;
 let portalPrepared = false;
+const mobileWorld = matchMedia('(max-width: 650px), (pointer: coarse)');
 function preparePortalTransition() {
   const transition = document.querySelector('.reading-portal-transition');
   if (!transition || !window.mountReadingPortalTransition || portalPrepared || reduce.matches) return;
@@ -58,12 +59,12 @@ function show(id){
   if(entryWithKeyboard)heading.removeAttribute('data-pointer-focus');else heading.setAttribute('data-pointer-focus','');
   heading.focus({preventScroll:true});
 }
-function enter(id,keyboard=false,glitchLabel=false,fromWheel=false){
+function enter(id,keyboard=false,glitchLabel=false,throughPortal=false){
   if(busy||!config.tabs.some(t=>t.id===id))return;
   busy=true;lastDestination=id;entryWithKeyboard=keyboard;wheelTotal=0;clearTimeout(returnTimer);document.body.classList.remove('world-returning');
   if(reduce.matches){show(id);busy=false;return}
   links.classList.add('is-travelling');links.setAttribute('aria-busy','true');
-  if (fromWheel && playPortalTransition()) {
+  if (throughPortal && playPortalTransition()) {
     entryTimers.push(setTimeout(() => { show(id); clearEntry(); }, portalDuration));
     return;
   }
@@ -180,7 +181,27 @@ function handleWorldWheel(e){
 }
 window.addEventListener('wheel',handleWorldWheel,{passive:false});
 
-document.querySelector('.scroll-world').addEventListener('click',e=>enter('intro',e.detail===0));
+document.querySelector('.scroll-world').addEventListener('click', event => {
+  enter('intro', event.detail === 0, false, mobileWorld.matches);
+});
+
+let worldTouchStart;
+window.addEventListener('touchstart', event => {
+  worldTouchStart = mobileWorld.matches && !document.body.classList.contains('reading')
+    && event.touches.length === 1 ? event.touches[0] : undefined;
+}, {passive:true});
+window.addEventListener('touchcancel', () => { worldTouchStart = undefined; }, {passive:true});
+window.addEventListener('touchend', event => {
+  const start = worldTouchStart;
+  worldTouchStart = undefined;
+  if (!start || event.touches.length || document.body.classList.contains('reading')) return;
+  const end = Array.from(event.changedTouches).find(touch => touch.identifier === start.identifier);
+  if (!end) return;
+  const rise = start.clientY - end.clientY;
+  if (rise > 65 && rise > Math.abs(start.clientX - end.clientX) * 1.5) {
+    enter('intro', false, false, true);
+  }
+}, {passive:true});
 
 function schedulePortalPreparation() {
   if (window.requestIdleCallback) requestIdleCallback(preparePortalTransition, { timeout: 900 });

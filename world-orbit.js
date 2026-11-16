@@ -35,18 +35,15 @@ function setupWorldOrbit(group) {
   });
   const narrow = matchMedia("(max-width: 650px)");
   let length = 0;
-  let orbitWidth = 0;
-  let orbitHeight = 0;
   let phase = 0.04;
   let last = 0;
   let frame = 0;
   let visible = false;
 
   function paint() {
-    const twoRows = narrow.matches;
     particles.forEach((dot, index) => {
-      dot.style.display = twoRows ? "none" : "";
-      if (twoRows) return;
+      const hidden = narrow.matches && index % 3 !== 0;
+      if (hidden) return;
       const progress = (phase * 2 + index / particles.length) % 1;
       const point = track.getPointAtLength(progress * length);
       const depth = (point.y / track.ry.baseVal.value + 1) / 2;
@@ -55,20 +52,13 @@ function setupWorldOrbit(group) {
       dot.setAttribute('opacity', (0.32 + depth * 0.48 + (index % 7 === 0 ? 0.2 : 0)).toFixed(2));
     });
     items.forEach((item, index) => {
-      if (twoRows) {
-        const column = index % 3 - 1;
-        const row = Math.floor(index / 3);
-        item.style.left = `calc(50% + ${column * orbitWidth / 3}px)`;
-        item.style.top = `calc(50% + ${(row - .5) * Math.min(44, orbitHeight * .36) + (1 - column ** 2) * 7}px)`;
-        item.style.setProperty('--orbit-scale', '1');
-        item.style.setProperty('--orbit-opacity', '1');
-        item.style.zIndex = '';
-        return;
-      }
       const position = (phase + index / items.length) % 1;
       // Pass more quickly across the lighthouse at the front of the orbit.
       const progress = (position + .045 * Math.sin(2 * Math.PI * (position - .25)) + 1) % 1;
-      const point = track.getPointAtLength(progress * length);
+      const angle = progress * 2 * Math.PI;
+      const point = narrow.matches
+        ? {x: Math.cos(angle) * track.rx.baseVal.value, y: Math.sin(angle) * track.ry.baseVal.value}
+        : track.getPointAtLength(progress * length);
       const depth = (point.y / track.ry.baseVal.value + 1) / 2;
       item.style.left = `calc(50% + ${point.x}px)`;
       item.style.top = `calc(50% + ${point.y}px)`;
@@ -81,7 +71,7 @@ function setupWorldOrbit(group) {
 
   function tick(now) {
     frame = 0;
-    if (!visible || document.hidden || reduce.matches || narrow.matches ||
+    if (!visible || document.hidden || reduce.matches ||
         group.querySelector('a:focus-visible') || group.classList.contains('is-travelling')) {
       last = 0;
       return;
@@ -98,8 +88,6 @@ function setupWorldOrbit(group) {
 
   function layout() {
     const {clientWidth: width, clientHeight: height} = group;
-    orbitWidth = width;
-    orbitHeight = height;
     if (!width || !height) return;
     items.forEach((item, index) => {
       const canvas = labels[index];
@@ -150,9 +138,10 @@ function setupWorldOrbit(group) {
     });
     group.querySelector('svg').setAttribute('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`);
     const labelPadding = Math.max(...items.map(item => item.offsetWidth)) * 0.57;
-    track.setAttribute('rx', Math.max(1, width / 2 - labelPadding));
+    track.setAttribute('rx', Math.max(1, width / 2 - labelPadding - (narrow.matches ? 8 : 0)));
     track.setAttribute('ry', Math.max(1, height / 2 - 30));
     length = track.getTotalLength();
+    particles.forEach((dot, index) => { dot.style.display = narrow.matches && index % 3 !== 0 ? 'none' : ''; });
     paint();
   }
 

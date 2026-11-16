@@ -1,6 +1,7 @@
 (() => {
 const $=s=>document.querySelector(s),stage=$('#exhibition'),rail=$('#rail'),cat=$('#catalogue'),additional=stage?.closest('#reading') ? siteContent.additionalPosters : [],
       works=siteContent.works.concat(additional.map(piece => [piece.name, piece.category])),N=works.length,mq=matchMedia('(prefers-reduced-motion: reduce)');
+const touchLayout = matchMedia('(max-width: 760px), (pointer: coarse)');
 let selected=8,active,expanded=false,immersed=false,busy=false,origin,placeholder,saved=0,savedRail=0,cycle=0,speed=0,frame=0,lastT=0,lastWheel=0,total=0,until=0,desired=0,hoverBook=null,hoverSince=0,pointer=null,detailReturn=null;
 const selectedName = $('#selected-name'), counter = $('#counter'), imageDialog = $('#image-dialog');
 const arrows = [$('#prev'), $('#next')].filter(Boolean);
@@ -47,7 +48,7 @@ function syncImmersionSwitch() {
     { transform: 'translateX(' + to + 'px)' }
   ], { duration: 320, easing: 'ease-out' });
 }
-function hint(){$('#hint').textContent=immersed?(expanded?'向上滚动收起':'向下滚动展开 · 左右半屏浏览 · Esc 返回长页'):'鼠标左/右半屏浏览 · 点击进入作品';}
+function hint(){$('#hint').textContent=touchLayout.matches?(immersed?(expanded?'':'左右滑动浏览 · 点击查看作品'):'左右滑动浏览 · 点击查看作品'):immersed?(expanded?'向上滚动收起':'向下滚动展开 · 左右半屏浏览 · Esc 返回长页'):'鼠标左/右半屏浏览 · 点击进入作品';}
 function clearMotion(){document.querySelectorAll('[data-exhibit-motion]').forEach(n=>{n.getAnimations().forEach(a=>a.cancel());n.remove();});}
 function artworkRect(){const r=$('#original img').getBoundingClientRect(),preview=active.querySelector('img'),ratio=preview.naturalWidth/preview.naturalHeight||1;const w=Math.min(r.width,r.height*ratio),h=w/ratio;return{left:r.left+(r.width-w)/2,top:r.top+(r.height-h)/2,width:w,height:h};}
 function fadeTitle(){if(mq.matches)return;const node=$('.feature-type'),r=node.getBoundingClientRect(),clone=node.cloneNode(true),src=[node,...node.querySelectorAll('*')],dst=[clone,...clone.querySelectorAll('*')];src.forEach((n,i)=>{const c=getComputedStyle(n);['fontFamily','fontSize','fontWeight','fontStyle','lineHeight','letterSpacing','color','display','margin','padding','textAlign','boxSizing'].forEach(p=>dst[i].style[p]=c[p]);});clone.dataset.exhibitMotion='title';Object.assign(clone.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',zIndex:39,pointerEvents:'none'});document.body.append(clone);clone.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-20px)'}],{duration:330,easing:'cubic-bezier(.4,0,1,1)'}).finished.catch(()=>{}).finally(()=>clone.remove());}
@@ -60,11 +61,11 @@ const captions=document.querySelectorAll('.feature-caption span');captions[0].te
 const hero=$('#original img');hero.src=piece.image;hero.alt=piece.alt;if(imageDialog)$('#original').setAttribute('aria-label','查看'+works[selected][0]+'完整原图');
 if(imageDialog){const full=imageDialog.querySelector('img');full.src=piece.image;full.alt=works[selected][0]+'完整海报';}const note=$('.feature-note');note.replaceChildren();piece.note.forEach((line,i)=>{if(i)note.append(document.createElement('br'));note.append(document.createTextNode(line));});
 }
-function enter(){if(immersed)return;stop();saved=scrollY;savedRail=cat.scrollLeft;origin=active;const r=stage.getBoundingClientRect();placeholder=document.createElement('div');placeholder.style.height=stage.offsetHeight+'px';placeholder.style.margin=getComputedStyle(stage).margin;placeholder.setAttribute('aria-hidden','true');stage.before(placeholder);document.body.style.position='fixed';document.body.style.top=`-${saved}px`;document.body.style.width='100%';immersed=true;stage.classList.add('immersed');stage.setAttribute('role','dialog');stage.setAttribute('aria-modal','true');if($('#exit'))$('#exit').hidden=false;syncImmersionSwitch();(immersionSwitch||$('#exit'))?.focus({preventScroll:true});$('#poster-tab').disabled=true;$('#ppt-tab').disabled=true;lastWheel=performance.now();total=0;if(!mq.matches)stage.animate([{clipPath:`inset(${Math.max(0,r.top)}px ${Math.max(0,innerWidth-r.right)}px ${Math.max(0,innerHeight-r.bottom)}px ${Math.max(0,r.left)}px)`},{clipPath:'inset(0px)'}],{duration:650,easing:'cubic-bezier(.16,1,.3,1)'});hint();}
+function enter(){if(immersed)return;stop();saved=scrollY;savedRail=cat.scrollLeft;origin=active;const r=stage.getBoundingClientRect();placeholder=document.createElement('div');placeholder.style.height=stage.offsetHeight+'px';placeholder.style.margin=getComputedStyle(stage).margin;placeholder.setAttribute('aria-hidden','true');stage.before(placeholder);document.body.style.position='fixed';document.body.style.top=`-${saved}px`;document.body.style.width='100%';immersed=true;stage.classList.add('immersed');stage.setAttribute('role','dialog');stage.setAttribute('aria-modal','true');if($('#exit'))$('#exit').hidden=false;syncImmersionSwitch();(touchLayout.matches ? $('#exit') : immersionSwitch || $('#exit'))?.focus({preventScroll:true});$('#poster-tab').disabled=true;$('#ppt-tab').disabled=true;lastWheel=performance.now();total=0;if(!mq.matches)stage.animate([{clipPath:`inset(${Math.max(0,r.top)}px ${Math.max(0,innerWidth-r.right)}px ${Math.max(0,innerHeight-r.bottom)}px ${Math.max(0,r.left)}px)`},{clipPath:'inset(0px)'}],{duration:650,easing:'cubic-bezier(.16,1,.3,1)'});hint();}
 function open(b){if(busy||(expanded&&performance.now()<until))return;stop();select(b,false);if(!exhibitionPieces[selected]){notice('此作品详情暂未就绪。');return;}renderPiece();const from=b.getBoundingClientRect();enter();expand(true,false);morph(from,artworkRect(),true);}
 async function exit(){
 if(!immersed||busy)return;stop();clearMotion();busy=true;const r=placeholder.getBoundingClientRect();
-if (!mq.matches) {
+if (!mq.matches && !touchLayout.matches) {
   const animations = [stage.animate([
     {transform:'none',transformOrigin:'0 0'},
     {transform:'translate('+r.left+'px,'+r.top+'px) scale('+r.width/innerWidth+','+r.height/innerHeight+')',transformOrigin:'0 0'}

@@ -50,6 +50,8 @@ body.world-returning>canvas{animation:surface-world .85s ease-out both}body.worl
 @media(prefers-reduced-motion:reduce){.down-curtain.surface-active,body.world-returning>canvas,body.world-returning>.identity{animation:none}}
 .chapter h2[data-pointer-focus]:focus{outline:none}
 
+.identity-mobile-break{display:none}
+@media(max-width:650px){.identity-mobile-break{display:revert}}
 /* Orbit Images adapted to the six existing destinations. */
 .identity{left:5%;top:clamp(90px,15vh,146px)}
 .identity h1{font-size:clamp(30px,3.25vw,52px);margin-bottom:8px}
@@ -112,9 +114,14 @@ body.reading:has(.glitch-sweep.is-fading) #reading{animation:glitch-reading-in 3
 @media(max-width:650px){
   .identity{top:76px}
   .identity p{font-size:12px;line-height:1.65}
-  .world-links.world-orbit{top:78%;height:clamp(96px,15vh,130px)}
-  .world-orbit a{font-size:clamp(13px,4vw,18px);padding:0 3px}
-  @media(max-height:500px){.world-links.world-orbit{top:75%}.world-orbit a{height:36px;min-height:36px}}
+  .world-links.world-orbit{top:73%;height:clamp(156px,24vh,228px)}
+  .world-orbit a,.world-orbit a.has-particle-label{
+    font-size:clamp(14px,4.2vw,19px);font-weight:700;padding:0 5px;
+    color:#effaff;opacity:1;text-shadow:0 1px 3px #02090f,0 0 6px #02090f;
+  }
+  .world-orbit a.has-particle-label{color:#a3bfd3}
+  .world-orbit a canvas.orbit-label-particles{filter:none}
+  @media(max-height:500px){.world-links.world-orbit{top:69%;height:126px}.world-orbit a{height:44px;min-height:44px}}
   .scroll-world{inset:auto auto max(12px,env(safe-area-inset-bottom)) 50%;transform:translateX(-50%);padding-left:16px}
 }
 @media(max-height:500px) and (orientation:landscape){
@@ -122,43 +129,52 @@ body.reading:has(.glitch-sweep.is-fading) #reading{animation:glitch-reading-in 3
   .world-links.world-orbit{height:100px}
 }
 @media(prefers-reduced-motion:reduce){.world-orbit.is-travelling a.is-departing{animation:none}}
-</style><link rel="stylesheet" href="reading-pill.css"><link rel="stylesheet" href="reading-side-rays.css"><link rel="stylesheet" href="reading-ocean.css"><link rel="stylesheet" href="reading-exhibition.css"><canvas aria-label="粒子夜海、月亮与灯塔"></canvas><header><strong>YBR</strong><span>月光夜航 · 粒子云幕</span></header><div class="identity"><h1 style="visibility:hidden">严彬荣</h1><p>AI热爱者*视觉设计探索者*新领域探索者</p></div><footer><span>悬停文字，观察粒子聚合</span><span>月面／碎月光／云幕 · 暂未接入开场</span></footer><script src="world-lighthouse.js"></script><script>
+</style><link rel="stylesheet" href="reading-pill.css"><link rel="stylesheet" href="reading-side-rays.css"><link rel="stylesheet" href="reading-ocean.css"><link rel="stylesheet" href="reading-exhibition.css"><canvas aria-label="粒子夜海、月亮与灯塔"></canvas><header><strong>YBR</strong><span>月光夜航 · 粒子云幕</span></header><div class="identity"><h1 style="visibility:hidden">严彬荣</h1><p>AI热爱者*视觉设计探索者<br class="identity-mobile-break">*新领域探索者</p></div><footer><span>悬停文字，观察粒子聚合</span><span>月面／碎月光／云幕 · 暂未接入开场</span></footer><script src="world-lighthouse.js"></script><script>
 window.worldOpeningPending=new URLSearchParams(location.search).get('embedded')==='1';
 const cv=document.querySelector('canvas'),reduce=matchMedia('(prefers-reduced-motion: reduce)');const gl=cv.getContext('webgl',{alpha:false,antialias:false});const ctx=gl?createParticleRenderer():null;if(!ctx)document.querySelector('.identity h1').style.visibility='visible';
 function createParticleRenderer(){const vs='attribute vec3 p;attribute vec4 color;uniform vec2 viewport;uniform float density;varying vec4 tint;void main(){gl_Position=vec4(p.x/viewport.x*2.0-1.0,1.0-p.y/viewport.y*2.0,0.0,1.0);gl_PointSize=p.z*density;tint=color;}',frag='precision mediump float;varying vec4 tint;void main(){float r=length(gl_PointCoord-vec2(.5));if(r>.5)discard;gl_FragColor=vec4(tint.rgb,tint.a*(1.0-smoothstep(.3,.5,r)));}';function shader(type,src){const a=gl.createShader(type);gl.shaderSource(a,src);gl.compileShader(a);if(!gl.getShaderParameter(a,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(a));return a}const program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,vs));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,frag));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);for(const [name,size,offset] of [['p',3,0],['color',4,12]]){const at=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(at);gl.vertexAttribPointer(at,size,gl.FLOAT,false,28,offset)}gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);let vertices=new Float32Array(3000000),cursor=0;const palette=new Map();const viewport=gl.getUniformLocation(program,'viewport'),density=gl.getUniformLocation(program,'density');return {globalAlpha:1,fillStyle:'#000',setTransform(){},fillRect(x,y,w,h){if(w===W&&h===H){cursor=0;gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,1);gl.clear(gl.COLOR_BUFFER_BIT);return}let c=palette.get(this.fillStyle);if(!c){const n=parseInt(this.fillStyle.slice(1),16);c=[(n>>16)/255,((n>>8)&255)/255,(n&255)/255];palette.set(this.fillStyle,c)}vertices[cursor++]=x+w/2;vertices[cursor++]=y+h/2;vertices[cursor++]=w;vertices[cursor++]=c[0];vertices[cursor++]=c[1];vertices[cursor++]=c[2];vertices[cursor++]=this.globalAlpha},flush(){gl.uniform2f(viewport,W,H);gl.uniform1f(density,dpr);gl.bufferData(gl.ARRAY_BUFFER,vertices.subarray(0,cursor),gl.DYNAMIC_DRAW);gl.drawArrays(gl.POINTS,0,cursor/7)}}}let W,H,dpr,frame=0;let mouse={x:-1000,y:-1000},view={x:0,y:0};window.addEventListener('pointermove',e=>{mouse={x:e.clientX,y:e.clientY}});document.documentElement.addEventListener('pointerleave',()=>{mouse={x:-1000,y:-1000}});let seed=365;function rand(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}const skyPoints=Array.from({length:24000},()=>({x:rand(),y:rand()*.47,r:rand(),z:rand()}));// Fixed sparse stars use their own seed, preserving all existing scene samples.
 const stars=(()=>{let starSeed=7319;const sr=()=>{starSeed=(starSeed*1664525+1013904223)>>>0;return starSeed/4294967296};return Array.from({length:260},()=>({x:sr(),y:.025+sr()*.405,r:sr(),a:sr()}))})();let namePoints=[];const sea=Array.from({length:16000},()=>({x:(rand()-.5)*110,z:2+rand()*115,r:rand(),p:rand()*6.28}));// Perspective-aware foreground sampling: uniformly sample screen depth, then unproject onto the water plane.
 const extraSea=Array.from({length:28000},()=>{const depth=.10+rand()*.52,z=1.86/depth;return {x:(rand()-.5)*z/ .62,z,r:rand(),p:rand()*6.28}});sea.push(...extraSea);
-function resize(){if(!ctx)return;W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio,1.5);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);const nc=document.createElement('canvas');nc.width=400;nc.height=110;const nt=nc.getContext('2d');nt.font=getComputedStyle(document.querySelector('h1')).font;nt.fillText('严彬荣',0,parseFloat(getComputedStyle(document.querySelector('h1')).fontSize)*.95+12);const nd=nt.getImageData(0,0,400,110).data;namePoints=[];for(let y=0;y<110;y+=2)for(let x=0;x<400;x+=2)if(nd[(y*400+x)*4+3]>100)namePoints.push({x,y});if(reduce.matches)draw(0)}function dot(x,y,r,c,alpha=1){x+=view.x;y+=view.y;if(!reduce.matches&&mouse.x>-100){const dx=x-mouse.x,dy=y-mouse.y,distanceSquared=dx*dx+dy*dy;if(distanceSquared>0&&distanceSquared<4225){const dist=Math.sqrt(distanceSquared),force=1-dist/65;x+=dx/dist*force*9;y+=dy/dist*force*9}}ctx.globalAlpha=alpha;ctx.fillStyle=c;ctx.fillRect(x-r,y-r,r*2,r*2)}function swell(x,z,t){return Math.sin(x*.26+z*.34-t*.85)*.42+Math.sin(x*.15-z*.21-t*.57)*.18}function beginParticleFrame(){
+function resize(){if(!ctx)return;W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio,W<=650?1:1.5);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);const nc=document.createElement('canvas');nc.width=400;nc.height=110;const nt=nc.getContext('2d');nt.font=getComputedStyle(document.querySelector('h1')).font;nt.fillText('严彬荣',0,parseFloat(getComputedStyle(document.querySelector('h1')).fontSize)*.95+12);const nd=nt.getImageData(0,0,400,110).data;namePoints=[];for(let y=0;y<110;y+=2)for(let x=0;x<400;x+=2)if(nd[(y*400+x)*4+3]>100)namePoints.push({x,y});if(reduce.matches)draw(0)}function dot(x,y,r,c,alpha=1){x+=view.x;y+=view.y;if(!reduce.matches&&mouse.x>-100){const dx=x-mouse.x,dy=y-mouse.y,distanceSquared=dx*dx+dy*dy;if(distanceSquared>0&&distanceSquared<4225){const dist=Math.sqrt(distanceSquared),force=1-dist/65;x+=dx/dist*force*9;y+=dy/dist*force*9}}ctx.globalAlpha=alpha;ctx.fillStyle=c;ctx.fillRect(x-r,y-r,r*2,r*2)}function swell(x,z,t){return Math.sin(x*.26+z*.34-t*.85)*.42+Math.sin(x*.15-z*.21-t*.57)*.18}function beginParticleFrame(){
   ctx.globalAlpha=1;ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);const vx=mouse.x>-100?(mouse.x/W-.5)*8:0,vy=mouse.x>-100?(mouse.y/H-.5)*5:0;view.x+=((reduce.matches?0:vx)-view.x)*.05;view.y+=((reduce.matches?0:vy)-view.y)*.05;
 }
 function drawSky(t, heightScale = 1){
-  for(const p of skyPoints){const flow=t*(.001+.0015*p.z);const nx=(p.x+flow)%1,ny=p.y+Math.sin(nx*11+t*.12+p.z)*.009;const cloud=.5+.25*Math.sin(nx*12+ny*16-t*.10)+.25*Math.sin(nx*21-ny*12+t*.07);const reading=nx<.36&&ny>.20?.48:1;dot(nx*W,ny*H*heightScale,.30+p.r*.45,cloud>.72?'#83a8c3':'#31516e',(.025+.48*Math.pow(Math.max(0,(cloud-.2)/.8),2))*reading)}
+  for(let i=0;i<skyPoints.length;i+=W<=650?3:1){const p=skyPoints[i];const flow=t*(.001+.0015*p.z);const nx=(p.x+flow)%1,ny=p.y+Math.sin(nx*11+t*.12+p.z)*.009;const cloud=.5+.25*Math.sin(nx*12+ny*16-t*.10)+.25*Math.sin(nx*21-ny*12+t*.07);const reading=nx<.36&&ny>.20?.48:1;dot(nx*W,ny*H*heightScale,.30+p.r*.45,cloud>.72?'#83a8c3':'#31516e',(.025+.48*Math.pow(Math.max(0,(cloud-.2)/.8),2))*reading)}
 }
-let worldDrawFrame=0;
+let worldDrawFrame=0,lastWorldPaint=-Infinity;
 function scheduleWorldDraw(){if(ctx&&!worldDrawFrame)worldDrawFrame=requestAnimationFrame(draw)}
-function draw(ms){worldDrawFrame=0;if(!ctx)return;if(window.worldOpeningPending||document.body.classList.contains("reading")||document.body.classList.contains("reading-portal-active")||document.hidden){window.worldPaused=true;return}window.worldPaused=false;const t=reduce.matches?0:ms/1000;beginParticleFrame();// Correlated cloud movement: no independent random twinkle or star streaks.
+function draw(ms){worldDrawFrame=0;if(!ctx)return;if(window.worldOpeningPending||document.body.classList.contains("reading")||document.body.classList.contains("reading-portal-active")||document.hidden){window.worldPaused=true;return}window.worldPaused=false;if(W<=650&&!reduce.matches&&ms-lastWorldPaint<31){scheduleWorldDraw();return}lastWorldPaint=ms;const t=reduce.matches?0:ms/1000;beginParticleFrame();// Correlated cloud movement: no independent random twinkle or star streaks.
 drawSky(t);
-const sunX=W*(W<=650?.46:.29),sunY=H*(W<=650?.085:.105);
+const sunX=W*(W<=650?.75:.29),sunY=H*(W<=650?.085:.105);
 // Quiet, fixed stars: a few bright points, softened near the moon and identity.
 for(const p of stars){const x=p.x*W,y=p.y*H;const moonDist=Math.hypot((x-sunX)/H,(y-sunY)/H),moonFade=Math.min(1,Math.max(0,(moonDist-.053)/.09));const textFade=p.x<.43&&p.y>.15?.38:1;const horizonFade=Math.min(1,(.46-p.y)/.12);const alpha=(.38+p.a*.38)*moonFade*textFade*horizonFade;dot(x,y,p.r>.95?1.15:p.r>.72?.82:.56,p.r>.95?'#e4eef7':'#a4bfd6',alpha)}
-seed=888;for(let i=0;i<4400;i++){const a=rand()*6.283,r=Math.sqrt(rand()),px=Math.cos(a)*r,py=Math.sin(a)*r;const sphereZ=Math.sqrt(Math.max(0,1-r*r));const light=Math.max(0,px*.75+sphereZ*.52);const crater=.76+.12*Math.sin(px*19+py*11)*Math.sin(py*23-px*8);const cloudShade=.90+.08*Math.sin(t*.12);dot(sunX+px*H*.045,sunY+py*H*.045,.5+rand()*.5,light>.30?'#d9e8f2':'#4a6784',(.10+light*.60)*crater*cloudShade)}
+seed=888;for(let i=0;i<(W<=650?1800:4400);i++){const a=rand()*6.283,r=Math.sqrt(rand()),px=Math.cos(a)*r,py=Math.sin(a)*r;const sphereZ=Math.sqrt(Math.max(0,1-r*r));const light=Math.max(0,px*.75+sphereZ*.52);const crater=.76+.12*Math.sin(px*19+py*11)*Math.sin(py*23-px*8);const cloudShade=.90+.08*Math.sin(t*.12);dot(sunX+px*H*.045,sunY+py*H*.045,.5+rand()*.5,light>.30?'#d9e8f2':'#4a6784',(.10+light*.60)*crater*cloudShade)}
 const horizon=H*.46,f=W<650?W*.95:W*.62;
 const light = lighthouse.pose(W, H, f, horizon, t, swell);
-for (const p of sea) {
-  const wave = swell(p.x, p.z, t);
-  const x = W * .5 + p.x / p.z * f;
-  const y = horizon + (3 + wave) / p.z * f + Math.sin(p.x * .12 + p.z * .21) * 1.5;
+for (let i = 0; i < sea.length; i += W <= 650 ? 3 : 1) {
+  const p = sea[i];
+  let z = p.z;
+  let worldX = p.x;
+  if (W <= 650 && i >= sea.length - extraSea.length) {
+    // Extend the mobile foreground below the viewport to allow for wave lift.
+    const depth = (1.86 / p.z - .10) / .52;
+    z = 3 * f / (H * (.08 + depth * .65));
+    worldX = (p.x / p.z) * z;
+  }
+  const wave = swell(worldX, z, t);
+  const x = W * .5 + worldX / z * f;
+  const y = horizon + (3 + wave) / z * f + Math.sin(worldX * .12 + z * .21) * 1.5;
   if (x < -5 || x > W + 5 || y > H + 5) continue;
   const distanceSquared = ((x - light.spotX) ** 2 + (y - light.spotY) ** 2) / light.radius ** 2;
   const intensity = Math.max(0, 1 - distanceSquared) ** 1.7;
-  const size = Math.min(1.25, .25 + f / p.z * .008) * (p.r * .45 + .7);
+  const size = Math.min(1.25, .25 + f / z * .008) * (p.r * .45 + .7);
   dot(x, y, size, intensity > .16 ? '#a9d7ec' : p.r > .5 ? '#659ab8' : '#2c577e',
     .16 + p.r * .38 + intensity * .48);
 }
 lighthouse.draw(light, dot);
 const nr=document.querySelector('h1').getBoundingClientRect();for(const p of namePoints)dot(nr.left+p.x,nr.top+p.y-12,.8,'#e9f8ff',.95);ctx.globalAlpha=1;ctx.flush();frame++;if(!reduce.matches)scheduleWorldDraw()}window.addEventListener('resize',resize);reduce.onchange=()=>{if(!reduce.matches)scheduleWorldDraw();else draw(0)};window.seaPreviewState=()=>({renderer:'WebGL POINTS',points:skyPoints.length+sea.length,frame});resize();if(!reduce.matches)scheduleWorldDraw();
 </script><script src="content.js"></script><nav class="world-links world-orbit" aria-label="世界栏目入口"><svg class="orbit-track" aria-hidden="true"><ellipse cx="0" cy="0" rx="1" ry="1"/></svg></nav><div class="world-glow-cursor" aria-hidden="true"></div><div id="reading"><div class="reading-react-particles" aria-hidden="true"></div><div class="reading-glow-cursor" aria-hidden="true"></div><div class="reading-side-rays" aria-hidden="true"></div><canvas class="reading-laser" aria-hidden="true"></canvas><div class="reading-beam" aria-hidden="true"></div><nav class="reading-nav pill-nav" data-items="pill" aria-label="内容导航"></nav><main></main><div class="reading-floor" aria-hidden="true"></div></div><div class="reading-portal-transition" aria-hidden="true" hidden></div><div class="down-curtain" aria-hidden="true"></div><button type="button" class="scroll-world" aria-label="进入深海，进入个人介绍长页"><svg viewBox="0 0 16 22" aria-hidden="true"><path d="M8 2v16m-5-5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span>进入深海</span></button><template id="reading-exhibition-template"><div class="exhibition" id="exhibition" tabindex="-1" aria-label="作品展台">
-<div class="toolbar"><div class="tabs" role="tablist" aria-label="作品分类"><button role="tab" aria-selected="true" id="poster-tab" aria-controls="poster-panel">海报</button><button role="tab" aria-selected="false" id="ppt-tab" aria-controls="ppt-panel" tabindex="-1">PPT</button></div><div class="tools"><div class="immersive-control"><button type="button" class="squish-switch" id="immersive-switch" aria-describedby="immersive-switch-text" role="switch" aria-checked="false" aria-label="沉浸式展台" title="进入沉浸式展台"><span class="squish-switch__track" aria-hidden="true"><span class="squish-switch__thumb"></span></span><span id="immersive-switch-text">点击进入沉浸式界面</span></button></div></div></div>
+<div class="toolbar"><div class="tabs" role="tablist" aria-label="作品分类"><button role="tab" aria-selected="true" id="poster-tab" aria-controls="poster-panel">海报</button><button role="tab" aria-selected="false" id="ppt-tab" aria-controls="ppt-panel" tabindex="-1">PPT</button></div><div class="tools"><div class="immersive-control"><button type="button" class="squish-switch" id="immersive-switch" aria-describedby="immersive-switch-text" role="switch" aria-checked="false" aria-label="沉浸式展台" title="进入沉浸式展台"><span class="squish-switch__track" aria-hidden="true"><span class="squish-switch__thumb"></span></span><span id="immersive-switch-text">点击进入沉浸式界面</span></button></div><button type="button" id="exit" hidden>返回长页</button></div></div>
 <div id="poster-panel" role="tabpanel" aria-labelledby="poster-tab">
 <div class="art-space">
 <div class="catalogue" id="catalogue" aria-label="横向作品列表"><div class="rail" id="rail"></div></div>

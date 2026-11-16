@@ -243,3 +243,23 @@
     content: none;
   }
 }
+
+#reading #exit { display: none; }
+
+@media (max-width: 760px), (pointer: coarse) {
+  #reading #exhibition.immersed {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+      env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overflow-y: auto;
+  }
+  #reading #exhibition.immersed .toolbar { flex: 0 0 auto; }
+  #reading #exhibition.immersed .immersive-control { display: none; }
+  #reading #exit:not([hidden]) {
+    display: block;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+}

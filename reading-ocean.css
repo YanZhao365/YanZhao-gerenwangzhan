@@ -101,8 +101,8 @@
 
 #reading[data-laser-fallback] .reading-beam { position: fixed; }
 @media (max-width: 760px) {
-  #reading { --track-x: calc(100% - 6.5rem); }
-  #reading main { padding-right: 6.5rem; }
+  #reading { --track-x: calc(100% - 12px); }
+  #reading main { padding-right: 0; }
   #reading .chapter { padding-top: 65px; }
   .reading-nav { --pn-x: 8px; --pn-inner: clamp(27px, 8vh, 46px); }
   .reading-nav[data-items="pill"] .pill-nav__item { font-size: 12px; }
@@ -228,4 +228,46 @@ body:has(.world-links[inert]) .world-glow-cursor { display: none; }
 .reading-portal-transition.is-preparing .reading-portal {
   transform: translate(-50%, -50%);
   animation: none;
+}
+
+@media (max-width: 760px) {
+  #reading .reading-laser, #reading .reading-beam { opacity: .18; }
+  #reading .reading-side-rays { width: 55vw; height: 38vh; }
+  #reading .reading-nav {
+    inset: auto 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 4px max(8px, env(safe-area-inset-right))
+      max(4px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+    background: #071722f5;
+    border-top: 1px solid #73c9de45;
+  }
+  #reading .reading-nav .pill-nav__slot {
+    position: static;
+    transform: none;
+    height: auto;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  #reading .reading-nav .pill-nav__item {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    min-height: 44px;
+    padding: 3px;
+    color: #e7feff;
+    text-align: center;
+  }
+  #reading .reading-nav .pill-nav__face { animation: none; }
+  #reading .reading-nav .pill-nav__slot[data-on] { background: #163344; }
+  #reading .reading-nav .reading-label-text { display: inline; opacity: 1; visibility: visible; }
+  #reading .reading-nav .reading-label-stroke { display: none; }
+  #reading:has(#exhibition.immersed) .reading-nav { display: none; }
+}
+
+@media (max-width: 650px), (pointer: coarse) {
+  .reading-portal-water {
+    background: radial-gradient(ellipse at 46% 36%, #8cf5ed, #226ea1 35%, #0b1838 72%);
+  }
 }

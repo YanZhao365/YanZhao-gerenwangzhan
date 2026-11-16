@@ -2,6 +2,7 @@
   const reading = document.querySelector('#reading');
   const navigation = reading.querySelector('.reading-nav');
   const exhibition = reading.querySelector('#exhibition');
+  const compact = matchMedia('(max-width: 760px)');
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const aurora = getComputedStyle(reading).getPropertyValue('--aurora').trim();
   const laser = createReadingLaser(reading.querySelector('.reading-laser'), aurora);
@@ -116,21 +117,21 @@
     const raysOpacity = 1 - fade * fade * (3 - 2 * fade);
     raysLayer.style.opacity = raysOpacity;
     raysLayer.hidden = raysOpacity === 0;
-    const beamX = stops[0].slot.offsetLeft;
+    const beamX = compact.matches ? width - 12 : stops[0].slot.offsetLeft;
 
     stops.forEach(({ slot, y: stopY, chapter, showStroke, removeStroke }) => {
       const lit = reach >= stopY - 0.5;
       if (slot.classList.contains('is-lit') && !lit) slot.classList.add('is-draining');
       if (lit) {
         slot.classList.remove('is-draining');
-        showStroke();
+        if (!compact.matches) showStroke();
       }
-      if (motion.matches) {
+      if (motion.matches || compact.matches) {
         slot.classList.remove('is-draining');
         removeStroke();
       }
       slot.classList.toggle('is-lit', lit);
-      slot.inert = !lit;
+      slot.inert = !compact.matches && !lit;
       slot.toggleAttribute('data-on', chapter && location.hash === '#' + chapter.id);
     });
 
